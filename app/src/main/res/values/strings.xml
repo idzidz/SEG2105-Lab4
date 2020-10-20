@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Profile Manager</string>
+    <string name="please_enter_a_team_name">(Please enter a team name)</string>
+</resources>
