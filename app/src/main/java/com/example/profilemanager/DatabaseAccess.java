@@ -1,5 +1,7 @@
 package com.example.profilemanager;
 
+import android.graphics.drawable.Drawable;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -14,7 +16,7 @@ import java.util.ArrayList;
 public class DatabaseAccess {
 
     public interface Listener{
-        void entryLists(ArrayList<String> entries);
+        void entryLists(ArrayList<Team> entries);
     }
     FirebaseDatabase masterTable;
     DatabaseReference tableReference;
@@ -24,22 +26,26 @@ public class DatabaseAccess {
     }
 
 
-    public void createEntry(String teamName,String postalCode){
+    public void createEntry(String teamName, String postalCode, int img){
+        Team team = new Team();
+        team.setImg(img);
+        team.setName(teamName);
+        team.setPostCode(postalCode);
         masterTable = FirebaseDatabase.getInstance();
         tableReference = masterTable.getReference("teams");
-        tableReference.child("teams").child(teamName).setValue(postalCode);
+        tableReference.child(teamName).setValue(team);
     }
 
     public void entryList(){
-        ArrayList<String> entries = new ArrayList<String>();
+        ArrayList<Team> entries = new ArrayList<Team>();
         masterTable = FirebaseDatabase.getInstance();
-        tableReference = masterTable.getReference("teams/teams");
+        tableReference = masterTable.getReference("teams");
         tableReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()){
-                    String entry = postSnapshot.getKey()+" - "+postSnapshot.getValue();
-                    entries.add(entry);
+                    Team team = postSnapshot.getValue(Team.class);
+                    entries.add(team);
                 }
                 listener.entryLists(entries);
             }

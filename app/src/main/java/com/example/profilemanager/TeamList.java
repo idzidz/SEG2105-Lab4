@@ -24,8 +24,8 @@ public class TeamList extends AppCompatActivity {
 
         dbAccess.setListener(new DatabaseAccess.Listener() {
             @Override
-            public void entryLists(ArrayList<String> entries) {
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(TeamList.this,android.R.layout.simple_list_item_1,entries);
+            public void entryLists(ArrayList<Team> entries) {
+                ListAdapter adapter = new ListAdapter(TeamList.this,entries);
                 teamList.setAdapter(adapter);
 
             }

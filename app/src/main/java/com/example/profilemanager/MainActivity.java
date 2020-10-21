@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     EditText teamName, teamPostal;
     ImageView teamIcon;
     DatabaseAccess dbAccess;
+    int resOut;
 
     public void OnOpenInGoogleMaps(EditText postalCode){
         //Intent string: the postal code entered by user
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         int resID = getResources().getIdentifier(drawableName, "drawable", getPackageName());
+        resOut = resID;
         avatarImage.setImageResource(resID);
     }
 
@@ -100,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         create.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){dbAccess.createEntry(teamName.getText().toString(),teamPostal.getText().toString());
+            public void onClick(View v){dbAccess.createEntry(teamName.getText().toString(),teamPostal.getText().toString(),resOut);
                 Toast.makeText(MainActivity.this,"Team Added",Toast.LENGTH_SHORT).show();
             }
         });
