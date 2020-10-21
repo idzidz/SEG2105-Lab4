@@ -30,10 +30,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(mapIntent);
     }
 
-    public void OnSetAvatarButton(ImageView teamIcon){
+    public void OnSetAvatarButton(View view){
         //Setting up separate activity which allows user to pick their icon.
         //getApplicationContext essentially extends ProfileActivity(?)
-        Intent intent = new Intent(getApplicationContext(), SetIcon.class);
+        Intent intent = new Intent(this, SetIcon.class);
         startActivityForResult (intent, 0);
     }
 
@@ -45,22 +45,19 @@ public class MainActivity extends AppCompatActivity {
         //Figuring out the correct image
         String drawableName = "ic_logo_00";
         switch (data.getIntExtra("imageID",R.id.image0)) {
-            case R.id.image0:
-                drawableName = "ic_logo_00";
-                break;
-            case R.id.image1:
+            case R.id.image5:
                 drawableName = "ic_logo_01";
                 break;
-            case R.id.image2:
+            case R.id.image4:
                 drawableName = "ic_logo_02";
                 break;
             case R.id.image3:
                 drawableName = "ic_logo_03";
                 break;
-            case R.id.image4:
+            case R.id.image2:
                 drawableName = "ic_logo_04";
                 break;
-            case R.id.image5:
+            case R.id.image1:
                 drawableName = "ic_logo_05";
                 break;
             default:
