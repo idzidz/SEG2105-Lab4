@@ -6,15 +6,18 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    Button map;
+    Button map,create,list;
     EditText teamName, teamPostal;
     ImageView teamIcon;
+    DatabaseAccess dbAccess;
 
     public void OnOpenInGoogleMaps(EditText postalCode){
         //Intent string: the postal code entered by user
@@ -37,14 +40,16 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult (intent, 0);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_CANCELED) return;
         //Getting the Avatar Image we show to our users
         ImageView avatarImage = (ImageView) findViewById(R.id.logo);
         //Figuring out the correct image
         String drawableName = "ic_logo_00";
-        switch (data.getIntExtra("imageID",R.id.image0)) {
+        switch (data.getIntExtra("imageID", R.id.image0)) {
             case R.id.image5:
                 drawableName = "ic_logo_01";
                 break;
@@ -74,11 +79,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        dbAccess = new DatabaseAccess();
+
         map = (Button) findViewById(R.id.buttonMap);
         teamPostal = (EditText) findViewById(R.id.teamPostal);
+        teamName = (EditText) findViewById(R.id.teamName);
         teamIcon = (ImageView) findViewById(R.id.logo);
-
-
+        create = (Button) findViewById(R.id.buttonCreate);
+        list = (Button) findViewById(R.id.buttonList);
 
         map.setOnClickListener(new View.OnClickListener(){
             public void onClick(View V){
@@ -89,6 +97,17 @@ public class MainActivity extends AppCompatActivity {
         teamIcon.setOnClickListener(new View.OnClickListener(){
             public void onClick(View V){
                 OnSetAvatarButton(teamIcon);
+            }
+        });
+        create.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){dbAccess.createEntry(teamName.getText().toString(),teamPostal.getText().toString());
+                Toast.makeText(MainActivity.this,"Team Added",Toast.LENGTH_SHORT).show();
+            }
+        });
+        list.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(MainActivity.this,TeamList.class);
+                startActivity(intent);
             }
         });
 
